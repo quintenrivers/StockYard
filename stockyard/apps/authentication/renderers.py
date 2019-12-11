@@ -9,6 +9,10 @@ class UserJSONRenderer(JSONRenderer):
 
     def render(self, data: Dict, media_type: str = None, renderer_context: str = None) -> str:
         token: bytes = data.get('token', None)
+        errors = data.get('errors', None)
+
+        if errors is not None:
+            return super(UserJSONRenderer, self).render(data)
 
         if token is not None and isinstance(token, bytes):
             data['token'] = token.decode(self.charset)
