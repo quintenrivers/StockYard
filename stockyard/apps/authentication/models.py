@@ -13,8 +13,14 @@ from typing import List
 
 class UserManager(BaseUserManager):
     def create_user(self, username: str, email: str, password: str) -> models:
-        if None in (username, email, password):
-            raise TypeError('Users must have a username, email address, and password')
+        if username is None:
+            raise TypeError('Users must have a user name')
+
+        if email is None:
+            raise TypeError('Users must have an email')
+
+        if password is None:
+            raise TypeError('Users must have a password')
 
         user: models = self.model(
             username=username,
