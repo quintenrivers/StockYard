@@ -1,4 +1,3 @@
-from typing import List, Dict, Tuple
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
@@ -25,7 +24,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model: User = User
 
         # List of all fields that could be in a req or res
-        fields: List[str] = [
+        fields: list = [
             'email',
             'username',
             'password',
@@ -51,7 +50,7 @@ class LoginSerializer(serializers.Serializer):
         read_only=True
     )
 
-    def validate(self, data: Dict) -> Dict:
+    def validate(self, data: dict) -> dict:
         email: serializers.CharField = data.get('email', None)
         password: serializers.CharField = data.get('password', None)
 
@@ -93,16 +92,16 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model: User = User
-        fields: Tuple = (
+        fields: tuple = (
             'email',
             'username',
             'password',
             'token',
         )
-        read_only_fields: Tuple = ('token',)
+        read_only_fields: tuple = ('token',)
 
-        def update(self, instance: User, validated_data: Dict) -> User:
-            password: Dict = validated_data.pop('password', None)
+        def update(self, instance: User, validated_data: dict) -> User:
+            password: dict = validated_data.pop('password', None)
 
             for (key, value) in validated_data.items():
                 setattr(instance, key, value)

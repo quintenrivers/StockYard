@@ -8,7 +8,6 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from typing import List
 
 
 class UserManager(BaseUserManager):
@@ -32,7 +31,13 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, username: str, email: str, password: str) -> models:
+    def create_superuser(
+        self,
+        username: str,
+        email: str,
+        password: str
+    ) -> models:
+
         user: models = self.create_user(
             username,
             email,
@@ -71,7 +76,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Fields required by `Django` for custom user model
     # `USERNAME_FIELD` tells us to use which field is used to login
     USERNAME_FIELD: str = 'email'
-    REQUIRED_FIELDS: List[str] = ['username']
+    REQUIRED_FIELDS: list = ['username']
 
     objects: UserManager = UserManager()
 
