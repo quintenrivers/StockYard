@@ -1,10 +1,5 @@
 import jwt
-from typing import (
-    List,
-    Tuple,
-    Optional,
-    Dict,
-)
+from typing import Optional
 
 from django.conf import settings
 from rest_framework import authentication, exceptions
@@ -29,7 +24,9 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # `auth_header` is a list with two element:
         # 1) the name of the authentication header
         # 2) the JWT to authenticate against
-        auth_header: List = authentication.get_authorization_header(request).split()
+        auth_header: list = authentication\
+            .get_authorization_header(request)\
+            .split()
         auth_header_prefix: str = self.authentication_header_prefix.lower()
 
         if not auth_header:
@@ -51,16 +48,16 @@ class JWTAuthentication(authentication.BaseAuthentication):
         return self._authenticate_credentials(request, token)
 
     @staticmethod
-    def _authenticate_credentials(request: object, token: str) -> Tuple:
+    def _authenticate_credentials(request: object, token: str) -> tuple:
         try:
-            payload: Dict = jwt.decode(token, settings.SECRET_KEY)
-        except:
+            payload: dict = jwt.decode(token, settings.SECRET_KEY)
+        except exceptions.AuthenticationFailed:
             msg: str = 'Invalid authentication. Could not decode token'
             raise exceptions.AuthenticationFailed(msg)
 
         try:
             user: User = User.objects.get(pk=payload['id'])
-        except:
+        except exceptions.AuthenticationFailed:
             msg: str = 'No user matching this token was found'
             raise exceptions.AuthenticationFailed(msg)
 

@@ -1,5 +1,3 @@
-from typing import Dict
-
 from rest_framework.views import exception_handler
 
 
@@ -7,7 +5,7 @@ def core_exception_handler(exc, context) -> exception_handler.__class__:
     # Delegates exception to default exception handler offered by DRF
     # if not explicitly handled here
     response: exception_handler.__class__ = exception_handler(exc, context)
-    handlers: Dict = {
+    handlers: dict = {
         'ValidationError': _handle_generic_error
     }
 
@@ -19,8 +17,8 @@ def core_exception_handler(exc, context) -> exception_handler.__class__:
     return response
 
 
-def _handle_generic_error(exc, context, response) -> Dict:
-    response.data = {
+def _handle_generic_error(exc, context, response) -> dict:
+    response.data: dict = {
         'errors': response.data
     }
 
